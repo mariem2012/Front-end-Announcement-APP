@@ -14,7 +14,7 @@
 
     <div class="home-container">
     <SearchBar @search="handleSearch" />
-    <AnnouncementList :announcements="filteredAnnouncements" />
+    <!-- <ListAnnouncement :announcements="filteredAnnouncements" /> -->
   </div>
 
     <section class="popular-section container my-5">
@@ -51,6 +51,7 @@
 
 <script setup>
 import { reactive } from 'vue';
+import ListAnnouncement from '../components/announcements/ListAnnouncement.vue';
 
 const popularCategories = reactive([
   { name: 'Emploi', image: '../assets/images/emploi.jpg.' },
@@ -97,11 +98,13 @@ const recentAnnonces = reactive([
 .popular-section .card,
 .recent-section .card {
   transition: 0.3s ease;
+  color: #1b639e;
 }
 
 .popular-section .card:hover,
 .recent-section .card:hover {
   transform: scale(1.05);
+  background-color:  #f8f7f4;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 

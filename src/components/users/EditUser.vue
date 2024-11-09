@@ -125,7 +125,7 @@ const handleUpdateUser = () => {
     await store.updateUser(userId, {
       name: nom.value,
       email: email.value,
-      password: password.value || undefined, 
+      password: password.value || undefined, // optional
       phone: phone.value,
       address: address.value,
       status: status.value === 'true'

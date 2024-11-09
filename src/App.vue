@@ -26,40 +26,15 @@
                 Accueil
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link
                 :to="isLoggedIn ? '/add-annonce' : '/login'"
                 class="nav-link btn btn-outline d-flex align-items-center"
               >
-                <i class="fa-solid fa-plus-circle mx-2"></i> 
-                Ajouter une annonce
+              <i class="fa-solid fa-right-to-bracket me-2"></i>
+               Connexion
               </router-link>
-            </li>
-            <li v-if="isLoggedIn" class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="userDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="fa-solid fa-user-circle mx-2"></i>
-                Mon Compte
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                <li>
-                  <router-link to="/profile" class="dropdown-item">Profil</router-link>
-                </li>
-                <li>
-                  <hr class="dropdown-divider" />
-                </li>
-                <li>
-                  <button @click="handleLogout" class="dropdown-item">Déconnexion</button>
-                </li>
-              </ul>
-            </li>
-
+            </li> -->
             <li class="nav-item">
               <router-link
                 to="/list-user"
@@ -72,7 +47,7 @@
 
             <li class="nav-item">
               <router-link
-                to="/annonces"
+                to="/list-announcement"
                 class="nav-link d-flex align-items-center"
               >
                 <i class="fa-solid fa-bullhorn mx-2"></i>

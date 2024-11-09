@@ -122,7 +122,7 @@
   const password = ref("");
   const phone = ref("");
   const address = ref("");
-  const status = ref("true"); // Par défaut, "true"
+  const status = ref("true"); 
   
   const handleAddUser = () => {
     addUser();
@@ -131,17 +131,16 @@
   
   const addUser = async () => {
     try {
-      // Envoi des données au store avec tous les champs requis pour le backend
       await store.addUser({
         name: nom.value,
         email: email.value,
         password: password.value,
         phone: phone.value,
         address: address.value,
-        status: status.value === 'true' // Convertit le statut en boolean
+        status: status.value === 'true' 
       });
       console.log("Utilisateur ajouté avec succès");
-      router.push('/list-user'); // Redirige après l’ajout
+      router.push('/list-user'); 
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'utilisateur:", error);
     }
