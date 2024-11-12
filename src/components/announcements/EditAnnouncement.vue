@@ -1,13 +1,14 @@
-<!-- <template>
-  <div class="container mt-5">
-    <form @submit.prevent="handleEditAnnouncement" class="formulaire form shadow p-4 mb-5 bg-body rounded">
-      <h2 class="text-center mb-4">Modifier l'Annonce</h2>
 
-      <div class="mb-3">
-        <label for="title" class="form-label"><i class="fas fa-heading"></i> Titre de l'annonce :</label>
+<template>
+  <div class="container mt-5">
+    <form @submit.prevent="handleEditAnnouncement" class="formulaire form shadow-lg p-5 mb-5 rounded bg-white">
+      <h2 class="text-center mb-4 text-dark">Modifier l'Annonce</h2>
+
+      <div class="mb-4">
+        <label for="title" class="form-label"><i class="fas fa-heading me-2"></i> Titre de l'annonce :</label>
         <input
           type="text"
-          class="form-control"
+          class="form-control form-control-lg"
           v-model="title"
           id="title"
           placeholder="Entrez le titre"
@@ -15,11 +16,11 @@
         />
       </div>
 
-      <div class="mb-3">
-        <label for="price" class="form-label"><i class="fas fa-dollar-sign"></i> Prix (en MRU) :</label>
+      <div class="mb-4">
+        <label for="price" class="form-label"><i class="fas fa-dollar-sign me-2"></i> Prix (en MRU) :</label>
         <input
           type="number"
-          class="form-control"
+          class="form-control form-control-lg"
           v-model="price"
           id="price"
           placeholder="Entrez le prix en MRU"
@@ -27,10 +28,10 @@
         />
       </div>
 
-      <div class="mb-3">
-        <label for="category" class="form-label"><i class="fas fa-list-alt"></i> Catégorie :</label>
+      <div class="mb-4">
+        <label for="category" class="form-label"><i class="fas fa-list-alt me-2"></i> Catégorie :</label>
         <select
-          class="form-select"
+          class="form-select form-select-lg"
           v-model="selectedCategory"
           id="category"
           required
@@ -42,10 +43,10 @@
         </select>
       </div>
 
-      <div class="mb-3">
-        <label for="description" class="form-label"><i class="fas fa-align-left"></i> Description :</label>
+      <div class="mb-4">
+        <label for="description" class="form-label"><i class="fas fa-align-left me-2"></i> Description :</label>
         <textarea
-          class="form-control"
+          class="form-control form-control-lg"
           v-model="description"
           id="description"
           rows="4"
@@ -53,10 +54,10 @@
         ></textarea>
       </div>
 
-      <div class="mb-3">
-        <label for="picture" class="form-label"><i class="fas fa-picture"></i> Photos :</label>
+      <div class="mb-4">
+        <label for="picture" class="form-label"><i class="fas fa-images me-2"></i> Photos :</label>
         <input
-          class="form-control"
+          class="form-control form-control-lg"
           type="file"
           id="picture"
           multiple
@@ -65,10 +66,11 @@
         <small class="text-muted">Vous pouvez télécharger plusieurs photos</small>
       </div>
 
-      <button type="submit" class="btn w-100 mt-3">Enregistrer les modifications</button>
+      <button type="submit" class="btn btn-primary btn-lg w-100">Enregistrer les modifications</button>
     </form>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -145,98 +147,7 @@ const handleEditAnnouncement = async () => {
 };
 </script>
 
-
-
 <style scoped>
-.formulaire {
-  max-width: 600px;
-  margin: auto;
-}
-
-.btn {
-  background-color: #FFA500;
-}
-
-.container {
-  margin-top: 70px;
-}
-</style> -->
-
-
-<template>
-  <div class="container mt-5">
-    <form @submit.prevent="handleEditAnnouncement" class="formulaire form shadow-lg p-5 mb-5 rounded bg-white">
-      <h2 class="text-center mb-4 text-dark">Modifier l'Annonce</h2>
-
-      <div class="mb-4">
-        <label for="title" class="form-label"><i class="fas fa-heading me-2"></i> Titre de l'annonce :</label>
-        <input
-          type="text"
-          class="form-control form-control-lg"
-          v-model="title"
-          id="title"
-          placeholder="Entrez le titre"
-          required
-        />
-      </div>
-
-      <div class="mb-4">
-        <label for="price" class="form-label"><i class="fas fa-dollar-sign me-2"></i> Prix (en MRU) :</label>
-        <input
-          type="number"
-          class="form-control form-control-lg"
-          v-model="price"
-          id="price"
-          placeholder="Entrez le prix en MRU"
-          required
-        />
-      </div>
-
-      <div class="mb-4">
-        <label for="category" class="form-label"><i class="fas fa-list-alt me-2"></i> Catégorie :</label>
-        <select
-          class="form-select form-select-lg"
-          v-model="selectedCategory"
-          id="category"
-          required
-        >
-          <option value="" disabled>Choisissez une catégorie</option>
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="mb-4">
-        <label for="description" class="form-label"><i class="fas fa-align-left me-2"></i> Description :</label>
-        <textarea
-          class="form-control form-control-lg"
-          v-model="description"
-          id="description"
-          rows="4"
-          placeholder="Décrivez votre annonce"
-        ></textarea>
-      </div>
-
-      <div class="mb-4">
-        <label for="picture" class="form-label"><i class="fas fa-images me-2"></i> Photos :</label>
-        <input
-          class="form-control form-control-lg"
-          type="file"
-          id="picture"
-          multiple
-          @change="handleImageUpload"
-        />
-        <small class="text-muted">Vous pouvez télécharger plusieurs photos</small>
-      </div>
-
-      <button type="submit" class="btn btn-primary btn-lg w-100">Enregistrer les modifications</button>
-    </form>
-  </div>
-</template>
-
-<style scoped>
-/* Harmoniser avec la page d'accueil */
 .formulaire {
   max-width: 800px;
   margin: auto;
@@ -245,7 +156,6 @@ const handleEditAnnouncement = async () => {
   border-radius: 10px;
 }
 
-/* Style du bouton */
 .btn {
   background-color: #004080;
   border: none;
@@ -258,7 +168,6 @@ const handleEditAnnouncement = async () => {
   background-color: #003366;
 }
 
-/* Style des champs */
 .form-control,
 .form-select {
   border-radius: 8px;
@@ -266,18 +175,15 @@ const handleEditAnnouncement = async () => {
   padding: 12px;
 }
 
-/* Couleur et style des étiquettes */
 .form-label {
   font-weight: bold;
   color: #333;
 }
 
-/* Ombre pour correspondre aux cartes d'annonces */
 .form {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Espacement et animation */
 .container {
   padding-top: 60px;
 }
