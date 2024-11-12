@@ -21,30 +21,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <router-link to="/" class="nav-link d-flex align-items-center">
-                <i class="fa-solid fa-house mx-2"></i> 
-                Accueil
+              <router-link to="/list-category" class="nav-link d-flex align-items-center">
+                <i class="fa-solid fa-list me-2"></i>
+                Catégorie
               </router-link>
             </li>
-            <!-- <li class="nav-item">
-              <router-link
-                :to="isLoggedIn ? '/add-annonce' : '/login'"
-                class="nav-link btn btn-outline d-flex align-items-center"
-              >
-              <i class="fa-solid fa-right-to-bracket me-2"></i>
-               Connexion
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/list-user"
-                class="nav-link d-flex align-items-center"
-              >
-                <i class="fa-solid fa-users mx-2"></i>
-                <span>Users</span>
-              </router-link>
-            </li>
-
+            
             <li class="nav-item">
               <router-link
                 to="/list-announcement"
@@ -54,6 +36,24 @@
                 <span>Annonces</span>
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link
+                :to="isLoggedIn ? '/add-annonce' : '/login'"
+                class="nav-link btn btn-outline d-flex align-items-center"
+              >
+              <i class="fa-solid fa-right-to-bracket me-2"></i>
+               Connexion
+              </router-link>
+            </li>
+            <!-- <li class="nav-item">
+              <router-link
+                to="/list-user"
+                class="nav-link d-flex align-items-center"
+              >
+                <i class="fa-solid fa-users mx-2"></i>
+                <span>Users</span>
+              </router-link>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -80,11 +80,16 @@ const handleLogout = () => {
 <style>
 .navbar {
   position: fixed;
+  background-color: #F8F7F4;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 50;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+ul li i{
+  /* color: #1b639e; */
 }
 
 .nav-link {

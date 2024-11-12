@@ -48,6 +48,37 @@ const announcement = ref({
   description: '',
 });
 
+onMounted(async () => {
+  const id = route.params.id;
+  const fetchedAnnouncement = await store.fetchAnnouncementById(id);
+  if (fetchedAnnouncement) {
+    announcement.value = fetchedAnnouncement;
+  }
+});
+
+const handleEditAnnouncement = async () => {
+  await store.updateAnnouncement(announcement.value.id, announcement.value);
+  router.push('/list-announcement');
+};
+</script>
+
+
+<!-- <script setup>
+import { ref, onMounted } from 'vue';
+import { useAnnouncementStore } from '../../store/announcementStore';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+const store = useAnnouncementStore();
+
+const announcement = ref({
+  title: '',
+  price: 0,
+  category_id: '',
+  description: '',
+});
+
 const categories = ref([]);
 
 onMounted(async () => {
@@ -63,7 +94,7 @@ const handleEditAnnouncement = async () => {
   await store.updateAnnouncement(announcement.value.id, announcement.value);
   router.push('/list-announcement');
 };
-</script>
+</script> -->
 
 <style scoped>
 .formulaire {

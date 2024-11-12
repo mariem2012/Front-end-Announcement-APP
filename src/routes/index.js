@@ -9,6 +9,9 @@ import ListAnnouncement from '../components/announcements/ListAnnouncement.vue'
 import ListUser from '../components/users/ListUser.vue'
 import EditUser from '../components/users/EditUser.vue'
 import AddUser from '../components/users/AddUser.vue'
+import ListCategory from '../components/categories/ListCategory.vue'
+import AddCategory from '../components/categories/AddCategory.vue'
+import EditCategory from '../components/categories/EditCategory.vue'
 
 
 const routes = [
@@ -35,6 +38,29 @@ const routes = [
     component: EditUser,
     props: true, 
   },
+  {
+    path: '/list-category',
+    name: 'ListCategory',
+    component: ListCategory,
+    meta: { title: 'Liste des Catégories' }
+  },
+  {
+    path: '/add-category',
+    name: 'AddCategory',
+    component: AddCategory,
+    meta: { title: 'Ajouter une Catégorie' }
+  },
+  {
+    path: '/edit-category/:id',
+    name: 'EditCategory',
+    component: EditCategory,
+    meta: { title: 'Modifier une Catégorie' },
+    props: true  
+  },
+  {
+    path: '/',
+    redirect: '/list-category'  
+  }
 
 ];
 
