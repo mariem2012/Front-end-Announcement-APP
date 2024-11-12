@@ -70,7 +70,6 @@ import { ref } from 'vue';
 
 const isLoggedIn = ref(false);
 
-// Fonction de déconnexion
 const handleLogout = () => {
   isLoggedIn.value = false;
   console.log('Déconnecté');
@@ -88,9 +87,6 @@ const handleLogout = () => {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-ul li i{
-  /* color: #1b639e; */
-}
 
 .nav-link {
   font-size: 1em;

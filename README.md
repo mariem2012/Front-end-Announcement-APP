@@ -2,16 +2,13 @@
 
 ## Description
 
-Gestion Recette App une application web de gestion des recettes en utilisant Vue.js 3 et la
-Composition API. La gestion des états est réalisée avec Pinia, et la navigation entre les
-différentes sections (Home, Recettes) est géré avec Vue Router. L'interface utilisateur
-est stylé avec Bootstrap.
+Announcement App est une application web de gestion des annonces locales en Mauritanie, développée avec Vue.js 3 et la Composition API. La gestion des états est réalisée avec Pinia, et la navigation entre les différentes pages (Accueil, Annonces, Catégories) est assurée par Vue Router. L'interface utilisateur est stylisée avec Bootstrap, offrant une expérience utilisateur moderne et réactive.
 
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-- [Node.js](https://nodejs.org/) (version 12 ou supérieure)
+- [Node.js](https://nodejs.org/) (version 14 ou supérieure)
 - VueJS `npm create vite@latest`
 
 
@@ -44,6 +41,8 @@ Pour démarrer l'application, exécutez la commande suivante :
 ```bash
 npm run dev
 ```
+L'application est accessible sur http://localhost:5173.
+
 ## Les fonctionalités
 
 1. **Announcement :** 
@@ -59,16 +58,24 @@ npm run dev
  - updateAnnouncement :  cette fonction permet de modifier une annonce.
 2. **Category :** 
 
- - getAllgories : cette fonction permet d'ajouter une categorie.
-   
- - getAllgoryById : cette fonction permet d'ajouter une categorie.
-   
- - createCategories : cette fonction permet d'ajouter une categorie.
- 
- - deleteCategories : cette fonction permet d'effacer une categorie à partir de son id.
- 
- - updateCategories :  cette fonction permet de modifier une categorie.
+ - getAllgories : Récupère toutes les catégories disponibles.
+ - getCategoryById : Récupère une catégorie spécifique en utilisant son identifiant.
 
+ - createCategory : Ajoute une nouvelle catégorie.
+ - deleteCategories : Supprime une catégorie à partir de son id.
+ 
+ - updateCategories : Modifier Modifie une catégorie existante.
+2. **Utilisateurs  :** 
+
+ - registerUser  : Permet à un nouvel utilisateur de s'inscrire à l'application.
+ - loginUser  : Authentifie l'utilisateur en vérifiant ses identifiants.
+ - fetchUsers : Récupère la liste des utilisateurs (administration).
+ - getUserById : Récupère les informations d'un utilisateur spécifique en utilisant son identifiant.
+ 
+ - updateUser : Met à jour les informations de l'utilisateur.
+ - deleteUser : Supprime un utilisateur en fonction de son identifiant.
+ - logoutUser : Déconnecte l'utilisateur de l'application.
+ 
 ## Author
 - **GitHub** : [Mariem Dianifaba](https://github.com/mariem2012)
 

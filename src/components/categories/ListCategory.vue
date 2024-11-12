@@ -92,7 +92,7 @@
       <h2 class="text-center fw-bold mb-4">Liste des Catégories</h2>
   
       <RouterLink to="/add-category">
-        <button class="btn btn-primary mb-4 fw-bold">
+        <button class="btn btn-dark mb-4 fw-bold">
           <i class="fa-solid fa-plus-circle"></i> Ajouter une Catégorie
         </button>
       </RouterLink>

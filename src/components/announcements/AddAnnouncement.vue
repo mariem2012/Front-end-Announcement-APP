@@ -237,7 +237,7 @@ const handleAddAnnouncement = async () => {
         <small class="text-muted">Vous pouvez télécharger plusieurs picture</small>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 mt-3">Ajouter l'annonce</button>
+      <button type="submit" class="btn w-100 mt-3">Ajouter l'annonce</button>
     </form>
   </div>
 </template>
@@ -300,6 +300,10 @@ const handleAddAnnouncement = async () => {
   .formulaire {
     max-width: 600px;
     margin: auto;
+  }
+
+  .btn {
+    background-color: #FFA500;
   }
 
   .container {

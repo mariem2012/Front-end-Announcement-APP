@@ -38,14 +38,32 @@ export const useAnnouncementStore = defineStore('announcementStore', {
       }
     },
 
+    // async fetchAnnouncementById(id) {
+    //   try {
+    //     const response = await api.get(`/announcements/${id}`);
+    //     this.selectedAnnouncement = response.data;
+    //   } catch (error) {
+    //     console.error("Erreur lors de la récupération de l'annonce:", error);
+    //   }
+    // },
+
+
     async fetchAnnouncementById(id) {
       try {
         const response = await api.get(`/announcements/${id}`);
-        this.selectedAnnouncement = response.data;
+        // Vérification que l'annonce est bien retournée
+        if (response && response.data) {
+          this.selectedAnnouncement = response.data;
+        } else {
+          console.error("Aucune donnée d'annonce reçue.");
+          this.selectedAnnouncement = null; // Mettre à null en cas de données vides
+        }
       } catch (error) {
         console.error("Erreur lors de la récupération de l'annonce:", error);
+        this.selectedAnnouncement = null; // En cas d'erreur, vider selectedAnnouncement
       }
     },
+    
 
     async createAnnouncement(data) {
       try {
@@ -65,6 +83,9 @@ export const useAnnouncementStore = defineStore('announcementStore', {
         console.error("Erreur lors de la mise à jour de l'annonce:", error);
       }
     },
+
+    
+    
 
     async deleteAnnouncement(id) {
       try {
