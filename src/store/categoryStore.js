@@ -108,6 +108,7 @@ export const useCategoryStore = defineStore("categoryStore", {
       try {
         await api.delete(`/categories/${id}`);
         this.categories = this.categories.filter(c => c.id !== id);
+        await this.fetchCategories()
       } catch (error) {
         console.error("Erreur lors de la suppression de la catégorie", error);
       }

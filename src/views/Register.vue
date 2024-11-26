@@ -3,22 +3,84 @@
     <div class="auth-container">
       <h2 class="text-center mb-4">Inscription</h2>
       <form @submit.prevent="handleRegister">
-        <div class="form-group mb-3">
-          <label for="name">Nom</label>
-          <input type="text" v-model="name" class="form-control" id="name" placeholder="Entrez votre nom complet" required />
+        <div class="form-group mb-3 input-with-icon">
+          <label for="name">Nom complet</label>
+          <input
+            type="text"
+            v-model="name"
+            class="form-control"
+            id="name"
+            placeholder="Entrez votre nom complet"
+            required
+          />
         </div>
-        <div class="form-group mb-3">
+
+        <div class="form-group mb-3 input-with-icon">
           <label for="email">Email</label>
-          <input type="email" v-model="email" class="form-control" id="email" placeholder="Entrez votre email" required />
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <input
+              type="email"
+              v-model="email"
+              class="form-control"
+              id="email"
+              placeholder="Entrez votre email"
+              required
+            />
+          </div>
         </div>
-        <div class="form-group mb-3">
+
+        <div class="form-group mb-3 input-with-icon">
           <label for="password">Mot de passe</label>
-          <input type="password" v-model="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required />
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              v-model="password"
+              class="form-control"
+              id="password"
+              placeholder="Entrez votre mot de passe"
+              required
+            />
+            <span class="input-group-text toggle-password" @click="toggleShowPassword">
+              <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+            </span>
+          </div>
         </div>
-        <button type="submit" class="btn w-100">Créer un compte</button>
+
+        <div class="form-group mb-3 input-with-icon">
+          <label for="phone">Numéro de téléphone</label>
+          <input
+            type="tel"
+            v-model="phone"
+            class="form-control"
+            id="phone"
+            placeholder="Entrez votre numéro de téléphone"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-3 input-with-icon">
+          <label for="address">Adresse</label>
+          <input
+            type="text"
+            v-model="address"
+            class="form-control"
+            id="address"
+            placeholder="Entrez votre adresse"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn w-100">S'inscrire</button>
       </form>
+
       <p class="text-center mt-3">
-        Déjà inscrit ? <router-link to="/login">Connectez-vous</router-link>
+        Déjà inscrit ? <router-link to="/login" class="link">Connectez-vous</router-link>
       </p>
     </div>
   </div>
@@ -26,51 +88,98 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useAuthStore } from '../store/authStore';
 
 const name = ref('');
 const email = ref('');
 const password = ref('');
+const phone = ref('');
+const address = ref('');
+const showPassword = ref(false); // Contrôle pour afficher/masquer le mot de passe
 
-const handleRegister = () => {
-  // Logique d'inscription
-  console.log('Inscription avec', name.value, email.value, password.value);
+const authStore = useAuthStore();
+
+const handleRegister = async () => {
+  try {
+    const userData = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      phone: phone.value,
+      address: address.value,
+    };
+
+    await authStore.register(userData);
+
+    alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+  } catch (error) {
+    console.error('Erreur lors de l\'inscription :', error);
+    alert('Échec de l\'inscription. Veuillez réessayer.');
+  }
+};
+
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
 };
 </script>
 
 <style scoped>
+/* Design principal */
 .auth-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #FFFF;
+  background-color: #F8F7F4; /* Beige clair */
 }
 
 .auth-container {
-  max-width: 600px;
-  margin-top: 60px;
-  padding: 30px;
-  background: #FFA500;
-  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fff; /* Fond blanc */
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input {
-  /* border: 1px solid #0A0F43; */
-  border: none;
-  outline: none;
+h2 {
+  color: #070f69; /* Bleu foncé */
+}
+
+.input-group-text {
+  background-color: #F8F7F4; /* Beige clair */
+  /* border: 1px solid #FFA500;  */
+  color: #070f69; /* Bleu foncé */
+}
+
+.toggle-password {
+  cursor: pointer;
+}
+
+
+
+.form-control:focus {
+  border-color: #070f69; 
+  box-shadow: 0 0 5px rgba(7, 15, 105, 0.5);
 }
 
 .btn {
-  background-color: #070f69;
-  color: #FFFF;
+  background-color: #FFA500; /* Bouton orange */
+  color: #fff;
+  border: none;
 }
 
-label {
-  color: #070f69;
+.btn:hover {
+  background-color: #070f69; /* Bleu foncé */
+  color: #fff;
 }
 
-div p {
-  color: #070f69;
+.link {
+  color: #070f69; /* Lien bleu foncé */
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 </style>

@@ -70,7 +70,6 @@
 // });
 
 
-// userStore.js
 import { defineStore } from 'pinia';
 import api from '../api.js';
 
@@ -91,9 +90,9 @@ export const useUserStore = defineStore('user', {
     },
 
     
-    async fetchUserById(userId) {
+    async fetchUserById(id) {
       try {
-        const response = await api.get(`/users/${userId}`); // Assurez-vous que l'endpoint est correct ici
+        const response = await api.get(`/users/${id}`); // Assurez-vous que l'endpoint est correct ici
         return response.data;
       } catch (error) {
         console.error("Erreur lors de la récupération de l'utilisateur:", error);
@@ -132,6 +131,7 @@ export const useUserStore = defineStore('user', {
         await api.delete(`/users/${id}`);
         this.users = this.users.filter(user => user.id !== id);
         console.log("User deleted successfully");
+        await this.fetchUsers();
       } catch (error) {
         console.error("Erreur lors de la suppression de l'utilisateur:", error);
         throw error;

@@ -16,8 +16,9 @@
       </div>
 
       <div class="mb-3">
-        <label for="price" class="form-label"><i class="fas fa-dollar-sign me-2"></i> Prix (en MRU) :</label>
-        <input
+        <label for="price" class="form-label">
+           <i class="fas fa-money-bill-alt me-2"></i> Prix (<span style="font-weight: bold;">MRU</span>) :
+        </label>        <input
           type="number"
           class="form-control"
           v-model="price"
@@ -112,7 +113,6 @@ const handleAddAnnouncement = async () => {
       description: description.value,
       picture: picture.value,
       publish_date: new Date().toISOString(),
-      // user_id: userId.value, 
     });
     console.log('Annonce ajoutée avec succès');
     router.push('/list-announcement');

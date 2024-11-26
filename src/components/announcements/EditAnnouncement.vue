@@ -17,7 +17,9 @@
       </div>
 
       <div class="mb-4">
-        <label for="price" class="form-label"><i class="fas fa-dollar-sign me-2"></i> Prix (en MRU) :</label>
+        <label for="price" class="form-label">
+          <i class="fas fa-money-bill-alt me-2"></i> Prix (<span style="font-weight: bold;">MRU</span>) :
+        </label>
         <input
           type="number"
           class="form-control form-control-lg"
