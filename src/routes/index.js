@@ -84,7 +84,7 @@ const routes = [
   { path: '/register', component: Register},
   { path: '/publish', component: PublishPage},
   {
-    path: '/detail-announcement/:id',
+    path: '/annonces/:id',
     name: 'AnnouncementDetails',
     component: AnnouncementDetails,
   },
@@ -100,37 +100,35 @@ const router = createRouter({
 });
 
 
-// router.beforeEach(async(to, from, next) => {
-//   const store = useAuthStore()
-//   await store.initialize();
-//   if (to.meta.requiresAuth && !store.isAuthenticated) {
-//     next("/login");
-//   } else {
-//     next();
-//   }
-// });
-
-router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  const userRole = authStore.role; // Récupérer le rôle de l'utilisateur connecté
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!authStore.isAuthenticated) {
-      // Si l'utilisateur n'est pas authentifié, redirigez vers la page de connexion
-      return next({ path: '/login' });
-    }
-    if (to.path.startsWith('/dashboard') && userRole !== 'admin') {
-      // Si l'utilisateur n'est pas admin, bloquez l'accès
-      return next({ path: '/' });
-    }
-    else {
-      // Autoriser l'accès pour les admins
-      console.log('Accès autorisé à l\'interface admin');
-    }
-    
-    
+router.beforeEach(async(to, from, next) => {
+  const store = useAuthStore()
+  await store.initialize();
+  if (to.meta.requiresAuth && !store.isAuthenticated) {
+    next("/login");
+  } else {
+    next();
   }
-  next();
 });
+
+// router.beforeEach((to, from, next) => {
+//   const authStore = useAuthStore()
+//   const userRole = authStore.role;
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!authStore.isAuthenticated) {
+
+//       return next({ path: '/login' });
+//     }
+//     if (to.path.startsWith('/dashboard') && userRole !== 'admin') {
+//       return next({ path: '/' });
+//     }
+//     else {
+//       console.log('Accès autorisé à l\'interface admin');
+//     }
+    
+    
+//   }
+//   next();
+// });
 
 export default router;
 

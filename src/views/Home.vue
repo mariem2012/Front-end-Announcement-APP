@@ -64,7 +64,7 @@
           <div class="card-body text-center">
             <h5 class="card-title">{{ annonce.title }}</h5>
             <p class="card-text">{{ annonce.category }}</p>
-            <router-link :to="'/detail-announcement/:id'" class="btn btn-warning mt-2">Voir Détails</router-link>
+            <router-link :to="`/annonces/${annonce.id}`" class="btn btn-warning mt-2">Voir Détails</router-link>
           </div>
         </div>
       </div>

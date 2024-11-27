@@ -263,6 +263,8 @@ function togglePasswordVisibility() {
 async function handleLogin() {
   try {
     const user = await authStore.login(email.value, password.value);
+    
+    
     if (user?.role) {
       if (user.role === 'ADMIN') {
         router.push({ path: `/dashboard` });
@@ -271,6 +273,7 @@ async function handleLogin() {
       } else {
         errorMessage.value = "Rôle de l'utilisateur non reconnu.";
       }
+
     } else {
       errorMessage.value = "Impossible de récupérer le rôle de l'utilisateur.";
     }

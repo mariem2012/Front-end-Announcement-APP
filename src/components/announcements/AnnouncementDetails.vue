@@ -1,21 +1,22 @@
 <template>
-  <div v-if="Object.keys(annonce.value).length > 0" class="row">
-    <div class="col-md-6">
+  <div v-if="annonce"  class="row">
+    <!-- <div class="col-md-6">
       <img v-if="annonce.value.image" :src="annonce.value.image" class="img-fluid rounded shadow" :alt="annonce.value.title" />
-    </div>
+    </div> -->
 
     <div class="col-md-6">
-      <h2 class="mb-4">{{ annonce.value.title }}</h2>
-      <p class="text-muted"><strong>Catégorie :</strong> {{ annonce.value.category }}</p>
-      <p><strong>Description :</strong> {{ annonce.value.description }}</p>
-      <p><strong>Date de publication :</strong> {{ formatDate(annonce.value.publishedAt) }}</p>
-      <p><strong>Prix :</strong> {{ formatPrice(annonce.value.price) }}</p>
-      <p><strong>Statut :</strong> {{ annonce.value.status }}</p>
+      <h2 class="mb-4">{{ annonce.title }}</h2>
+      <p><strong>Titre :</strong> {{ annonce.title }}</p>
+      <p><strong>Description :</strong> {{ annonce.description }}</p>
+      <p><strong>Date de publication :</strong> {{ formatDate(annonce.publish_date) }}</p>
+      <p><strong>Prix :</strong> {{ formatPrice(annonce.price) }}</p>
+      <p><strong>Statut :</strong> <span v-if="annonce.status === true"> Disponible</span> <span v-else> Indisponible</span></p>
+      <p class="text-muted"><strong>Catégorie :</strong> {{ annonce.category.name }}</p>
       <hr />
       <h5>Informations sur l'utilisateur</h5>
-      <p><strong>Nom :</strong> {{ annonce.value.user?.name || "N/A" }}</p>
-      <p><strong>Email :</strong> {{ annonce.value.user?.email || "N/A" }}</p>
-      <p><strong>Téléphone :</strong> {{ annonce.value.user?.phone || "N/A" }}</p>
+      <p><strong>Nom :</strong> {{ annonce.user?.name || "N/A" }}</p>
+      <p><strong>Email :</strong> {{ annonce.user?.email || "N/A" }}</p>
+      <p><strong>Téléphone :</strong> {{ annonce.user?.phone || "N/A" }}</p>
     </div>
   </div>
   <div v-else>

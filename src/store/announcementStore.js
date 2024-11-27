@@ -60,10 +60,12 @@ export const useAnnouncementStore = defineStore('announcementStore', {
         const response = await api.get(`/announcements/${id}`);
         if (response && response.data) {
           this.selectedAnnouncement = response.data;
+          
         } else {
           console.error('Aucune donnée d\'annonce reçue.');
           this.selectedAnnouncement = {}; // Remplacer `null` par un objet vide
         }
+        return response.data
       } catch (error) {
         console.error('Erreur lors de la récupération de l\'annonce:', error);
         this.selectedAnnouncement = {}; // Toujours retourner un objet

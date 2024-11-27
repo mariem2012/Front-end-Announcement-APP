@@ -83,7 +83,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/list-announcement" class="nav-link link-text" :class="{ active: $route.path === '/list-announcement' }">
+                <router-link :to="role ==='ADMIN' ?'/list-announcement': '/profil'" class="nav-link link-text" :class="{ active: $route.path === '/list-announcement' }">
                   <i class="fa-solid fa-bullhorn me-2"></i> Annonces
                 </router-link>
               </li>
@@ -113,6 +113,13 @@
             </li>
 
             <!-- Bouton "Déconnexion" -->
+            <li class="nav-item" title="Utilisateur" v-if="authStore.isAuthenticated">
+              <router-link :to=" role === 'ADMIN' ? '/dashboard' :`/profil/${userId}`"
+                class="nav-link btn btn-outline d-flex align-items-center"
+              >
+                <i class="fa-solid fa-user mt-1 me-2"></i>
+              </router-link>
+            </li>
             <li class="nav-item" v-if="authStore.isAuthenticated">
               <button
                 @click="handleLogout"
@@ -132,13 +139,19 @@
   </template>
   
   <script setup>
-  import { ref } from "vue";
+  import { computed, ref } from "vue";
   import { useAuthStore } from '../store/authStore';
+import router from "../routes";
 
     const authStore = useAuthStore();
+const userId = (computed(()=> localStorage.getItem("userId")))
+const role = computed(()=> localStorage.getItem("userRole"))
+
+console.log("USER_ID", userId.value, "ROLE", role.value);
 
     const handleLogout = async () => {
       await authStore.logout();
+      router.push("/")
     };
   </script>
   

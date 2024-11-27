@@ -32,7 +32,9 @@ export const useAuthStore = defineStore('authStore', {
         const response = await api.post('/login', { email, password });
 
         const { token, user } = response.data;
-
+        localStorage.setItem("userId", user.id)
+        localStorage.setItem("userRole", user.role)
+        
         this.user.value = {
           role: user.role,
           userId: user.id,
@@ -66,7 +68,5 @@ export const useAuthStore = defineStore('authStore', {
             toast.error('Erreur lors de la déconnexion.');
           }
     },
-    
-        
   },
 });
