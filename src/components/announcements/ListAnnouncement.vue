@@ -157,7 +157,7 @@ const deleteAnnouncement = (id) => {
             <th>Date de Publication</th>
             <th>Catégorie</th>
             <th>Statut</th>
-            <th>Description</th>
+            
             <th class="text-center">Actions</th>
           </tr>
         </thead>
@@ -173,7 +173,7 @@ const deleteAnnouncement = (id) => {
                 {{ announcement.status ? 'Actif' : 'Inactif' }}
               </span>
             </td>
-            <td>{{ announcement.description }}</td>
+           
             <td class="text-center">
               <button
                 @click="viewAnnouncementDetails(announcement)"

@@ -110,13 +110,13 @@ const handleRegister = async () => {
     };
 
     await authStore.register(userData);
-
-    alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+    router.push({ path: `/profil/${user.userId}` });
   } catch (error) {
     console.error('Erreur lors de l\'inscription :', error);
-    alert('Échec de l\'inscription. Veuillez réessayer.');
+    alert(error.message || 'Échec de l\'inscription. Veuillez réessayer.');
   }
 };
+
 
 const toggleShowPassword = () => {
   showPassword.value = !showPassword.value;

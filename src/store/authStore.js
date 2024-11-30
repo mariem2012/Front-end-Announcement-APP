@@ -22,7 +22,6 @@ export const useAuthStore = defineStore('authStore', {
         if (storedToken) {
           this.token = storedToken;
           this.isAuthenticated = true;
-          // await this.fetchRole();
           api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
         }
       },
@@ -47,13 +46,41 @@ export const useAuthStore = defineStore('authStore', {
         api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
         console.log(token)
         toast.success('Vous avez été connecté avec succès !');
-        // await this.fetchRole()
         return this.user.value;
       } catch (error) {
         console.error('Erreur lors de la connexion :', error);
         toast.error('Échec de la connexion. Veuillez vérifier vos informations.');
       }
     },
+
+    async register(userData) {
+      try {
+        const response = await api.post('/register', userData);
+        const { token, user } = response.data;
+    
+        // Enregistrer le token et les informations utilisateur
+        this.token = token;
+        this.isAuthenticated = true;
+        localStorage.setItem('token', this.token);
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userRole', user.role);
+        api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+    
+        this.user = {
+          id: user.id,
+          name: user.name,
+          role: user.role,
+        };
+    
+        toast.success('Inscription réussie. Bienvenue sur la plateforme !');
+        return response.data;
+      } catch (error) {
+        const errorMessage = error.response?.data?.message || 'Une erreur est survenue. Veuillez réessayer.';
+        toast.error('Erreur lors de l\'inscription');
+        throw new Error(errorMessage); // Propager l'erreur pour que le composant puisse réagir
+      }
+    },
+    
 
     async logout() {
 

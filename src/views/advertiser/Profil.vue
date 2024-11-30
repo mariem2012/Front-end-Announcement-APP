@@ -199,12 +199,10 @@ onMounted(async () => {
  <template>
   <Navbar />
   <div class="container mt-5">
-    <!-- Loader -->
     <div v-if="loading" class="text-center my-5">
       <p>Chargement...</p>
     </div>
     <div v-else>
-      <!-- Profil utilisateur -->
       <div class="card shadow-sm" style="background-color: #f8f9fa; border-radius: 15px;">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-4" style="background-color: #e9ecef; padding: 20px; border-radius: 15px;">
@@ -221,6 +219,12 @@ onMounted(async () => {
                 <small class="text-muted"><i class="fa fa-map-marker me-2"></i>{{ user.address }}</small>
               </div>
             </div>
+            <router-link
+              class="btn btn-outline-primary"
+              to="/add-announcement"
+            >
+              Ajouter une annonce
+            </router-link>
             <button
               class="btn btn-outline-primary"
               data-bs-toggle="modal"
@@ -234,10 +238,9 @@ onMounted(async () => {
             <i class="fa fa-phone me-2"></i> {{ user.phone }}
           </p>
 
-          <!-- Annonces utilisateur -->
           <h5 class="mt-4 mb-3" style="color: #218838;">Annonces récentes</h5>
           <div v-if="announcements.length > 0" class="row">
-            <div v-for="annonce in announcements" :key="annonce.id" class="col-md-4 mb-3">
+            <div v-for="annonce in announcements.value" :key="annonce.id" class="col-md-4 mb-3">
               <div class="card h-100" style="border: 1px solid #218838; border-radius: 10px;">
                 <img
                   :src="annonce.image || 'https://via.placeholder.com/150'"
@@ -258,7 +261,6 @@ onMounted(async () => {
     </div>
   </div>
 
-  <!-- Modal pour modifier le profil -->
   <div
     class="modal fade"
     id="editProfileModal"
@@ -292,6 +294,13 @@ onMounted(async () => {
             </div>
             <div class="text-end">
               <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Annuler</button>
+              <router-link
+              class="btn btn-warning me-2" 
+              to="/put/password"
+            >
+            Modifier le password
+            </router-link>
+            <!-- <button type="submit" class="btn btn-warning me-2" to="/put/password">Modifier password</button> -->
               <button type="submit" class="btn btn-success">Enregistrer</button>
             </div>
           </form>
@@ -310,11 +319,9 @@ import { useAnnouncementStore } from '../../store/announcementStore';
 const route = useRoute();
 const userId = parseInt(route.params.id);
 
-// Stores
 const userStore = useUserStore();
 const announcementStore = useAnnouncementStore();
 
-// States
 const loading = ref(true);
 const user = ref({});
 const announcements = ref([]);
@@ -325,7 +332,6 @@ const editForm = ref({
   phone: '',
 });
 
-// Méthodes
 async function loadUserProfile() {
   try {
     const fetchedUser = await userStore.fetchUserById(userId);
@@ -340,18 +346,24 @@ async function loadUserProfile() {
   }
 }
 
-async function loadUserAnnouncements() {
-  try {
-    const fetchedAnnouncements = await announcementStore.fetchAnnouncementsByUserId(userId);
-    if (fetchedAnnouncements && fetchedAnnouncements.length > 0) {
-      announcements.value = fetchedAnnouncements;
-    } else {
-      console.warn("Aucune annonce trouvée pour cet utilisateur.");
-    }
-  } catch (error) {
-    console.error("Erreur lors du chargement des annonces :", error);
-  }
-}
+onMounted(async () => {
+  announcements.value = await announcementStore.fetchAnnouncementsByUserId(userId);
+  console.log(announcements.value);
+})
+
+// async function loadUserAnnouncements() {
+//   try {
+//     const fetchedAnnouncements = await announcementStore.fetchAnnouncementsByUserId(userId);
+//     if (fetchedAnnouncements && fetchedAnnouncements.length > 0) {
+//       announcements.value = fetchedAnnouncements;
+//     } else {
+//       console.warn("Aucune annonce trouvée pour cet utilisateur.");
+//     }
+//   } catch (error) {
+//     console.error("Erreur lors du chargement des annonces :", error);
+//   }
+// }
+// loadUserAnnouncements()
 
 onMounted(async () => {
   loading.value = true;

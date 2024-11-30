@@ -40,21 +40,6 @@ export const useAnnouncementStore = defineStore('announcementStore', {
       }
     },
 
-    // async fetchAnnouncementById(id) {
-    //   try {
-    //     const response = await api.get(`/announcements/${id}`);
-    //     if (response && response.data) {
-    //       this.selectedAnnouncement = response.data;
-    //     } else {
-    //       console.error('Aucune donnée d\'annonce reçue.');
-    //       this.selectedAnnouncement = null;
-    //     }
-    //   } catch (error) {
-    //     console.error('Erreur lors de la récupération de l\'annonce:', error);
-    //     this.selectedAnnouncement = null;
-    //   }
-    // },
-
     async fetchAnnouncementById(id) {
       try {
         const response = await api.get(`/announcements/${id}`);
@@ -78,6 +63,8 @@ export const useAnnouncementStore = defineStore('announcementStore', {
         const response = await api.get(`/announcements/annouceUser/${userId}`);
         if (response && response.data) {
           this.announcements = response.data;
+          console.log(response);
+          
         } else {
           console.error('Aucune annonce trouvée pour cet utilisateur.');
           this.announcements = [];
@@ -95,20 +82,60 @@ export const useAnnouncementStore = defineStore('announcementStore', {
 
     async createAnnouncement(data) {
       try {
-        const response = await api.post('/announcements', data);
-        this.announcements.push(response.data);
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await api.post('/announcements', data, config);
+        this.announcements.push(response.data.announcement);
+        return response.data; // Retourner les données pour confirmation
       } catch (error) {
         console.error("Erreur lors de la création de l'annonce:", error);
+        if (error.response) {
+          throw error.response.data; // Propager les erreurs du backend pour traitement
+        }
+        throw error;
       }
     },
 
+
+    // async createAnnouncement(formData) {
+    //   try {
+    //     const response = await api.post('/announcements', formData, {
+    //       headers: { 'Content-Type': 'multipart/form-data' },
+    //     });
+    //     return response.data;
+    //   } catch (error) {
+    //     console.error("Erreur lors de la création de l'annonce :", error);
+    //     throw error;
+    //   }
+    // },
     async updateAnnouncement(id, data) {
       try {
-        const response = await api.put(`/announcements/${id}`, data);
-        const index = this.announcements.findIndex(a => a.id === id);
-        if (index !== -1) this.announcements[index] = response.data;
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await api.put(`/announcements/${id}`, data, config);
+
+        // Mettre à jour localement l'annonce si elle est trouvée
+        const index = this.announcements.findIndex(
+          (announcement) => announcement.id === id
+        );
+        if (index !== -1) {
+          this.announcements[index] = response.data.announcement;
+        }
+        return response.data; // Retourner les données mises à jour
       } catch (error) {
-        console.error("Erreur lors de la mise à jour de l'annonce:", error);
+        console.error("Erreur lors de la modification de l'annonce:", error);
+        if (error.response) {
+          throw error.response.data; // Propager les erreurs du backend
+        }
+        throw error;
       }
     },
 

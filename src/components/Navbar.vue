@@ -83,7 +83,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link :to="role ==='ADMIN' ?'/list-announcement': '/profil'" class="nav-link link-text" :class="{ active: $route.path === '/list-announcement' }">
+                <router-link :to="role ==='ADMIN' ?'/list-announcement': '/announcements'" class="nav-link link-text" :class="{ active: $route.path === '/list-announcement' }">
                   <i class="fa-solid fa-bullhorn me-2"></i> Annonces
                 </router-link>
               </li>

@@ -6,9 +6,6 @@
             <img src="../assets/images/logo.svg" alt="Logo" class="logo" />
           </router-link>
           <div>
-            <!-- <router-link to="/publish" class="btn btn-primary me-3">
-              Publier une annonce
-            </router-link> -->
             <router-link to="/" class="btn btn-outline-primary">Quitter</router-link>
           </div>
         </div>
@@ -29,11 +26,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <!-- <img
-              src="../assets/images/illustration.png"
-              alt="Illustration"
-              class="img-fluid"
-            /> -->
+           
           </div>
         </div>
       </div>
@@ -41,9 +34,7 @@
   </template>
   
   <script>
-//   export default {
-//     name: "PublishPage",
-//   };
+
   </script>
   
   <style scoped>

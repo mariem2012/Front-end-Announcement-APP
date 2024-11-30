@@ -56,17 +56,7 @@
         ></textarea>
       </div>
 
-      <div class="mb-4">
-        <label for="picture" class="form-label"><i class="fas fa-images me-2"></i> Photos :</label>
-        <input
-          class="form-control form-control-lg"
-          type="file"
-          id="picture"
-          multiple
-          @change="handleImageUpload"
-        />
-        <small class="text-muted">Vous pouvez télécharger plusieurs photos</small>
-      </div>
+      
 
       <button type="submit" class="btn btn-primary btn-lg w-100">Enregistrer les modifications</button>
     </form>
@@ -78,6 +68,7 @@
 import { ref, onMounted } from 'vue';
 import { useAnnouncementStore } from '../../store/announcementStore';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const route = useRoute();
 const router = useRouter();
@@ -87,7 +78,7 @@ const title = ref('');
 const price = ref(0);
 const selectedCategory = ref('');
 const description = ref('');
-const picture = ref([]);
+const toast = useToast()
 const categories = ref([]);
 const announcementId = ref('');
 
@@ -113,7 +104,7 @@ const loadAnnouncement = async () => {
       price.value = fetchedAnnouncement.price;
       selectedCategory.value = fetchedAnnouncement.category_id;
       description.value = fetchedAnnouncement.description;
-      picture.value = fetchedAnnouncement.picture || [];
+      
     } else {
       console.error("Aucune annonce trouvée pour cet ID");
     }
@@ -128,9 +119,7 @@ onMounted(() => {
   loadAnnouncement();
 });
 
-const handleImageUpload = (event) => {
-  picture.value = Array.from(event.target.files);
-};
+
 
 const handleEditAnnouncement = async () => {
   try {
@@ -139,14 +128,22 @@ const handleEditAnnouncement = async () => {
       price: parseFloat(price.value),
       category_id: parseInt(selectedCategory.value),
       description: description.value,
-      picture: picture.value,
+      
     });
-    console.log('Annonce modifiée avec succès');
+    toast.success('Annonce modifiée avec succès');
     router.push('/list-announcement');
   } catch (error) {
     console.error("Erreur lors de la modification de l'annonce :", error);
+    if (error.errors) {
+      //serverErrors.value = error.errors;  Affichez les erreurs serveur
+    } else {
+      toast.error(
+        error.error || 'Une erreur est survenue. Veuillez réessayer.'
+      );
+    }
   }
 };
+
 </script>
 
 <style scoped>

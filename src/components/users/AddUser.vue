@@ -171,14 +171,15 @@
     <div class="container">
       <form @submit.prevent="handleAddUser" class="formulaire form mb-5 mt-5 shadow p-3 mb-5 bg-body rounded">
         <div class="mb-3">
-          <label for="nom" class="form-label">Nom :</label>
+          <label for="name" class="form-label">Nom :</label>
           <input
             type="text"
             class="input form-control"
-            v-model="nom"
-            id="nom"
+            v-model="name"
+            id="name"
             required
           />
+          <small class="text-danger">{{ errors.name }}</small>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email :</label>
@@ -189,6 +190,7 @@
             id="email"
             required
           />
+          <small class="text-danger">{{ errors.email }}</small>
         </div>
         <div class="mb-3">
             <label for="role" class="form-label">Rôle :</label>
@@ -199,6 +201,7 @@
             id="role"
             required
           />
+          <small class="text-danger">{{ errors.description }}</small>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Mot de passe :</label>
@@ -209,6 +212,7 @@
             id="password"
             required
           />
+          <small class="text-danger">{{ errors.password }}</small>
         </div>
         <div class="mb-3">
           <label for="phone" class="form-label">Numéro de téléphone :</label>
@@ -219,6 +223,7 @@
             id="phone"
             required
           />
+          <small class="text-danger">{{ errors.phone }}</small>
         </div>
         <div class="mb-3">
           <label for="address" class="form-label">Adresse :</label>
@@ -229,6 +234,7 @@
             id="address"
             required
           />
+          <small class="text-danger">{{ errors.address }}</small>
         </div>
         <div class="form-floating mb-4">
           <select
@@ -247,6 +253,7 @@
           <span v-if="errors.status" class="error-text">{{
             errors.status
           }}</span>
+
         </div>
         <button class="clr btn mt-3 mb-4 me-3 text-white">
           Ajouter
@@ -263,7 +270,7 @@
   <script setup>
   import { useUserStore } from '../../store/userStore';
   import { useRouter } from 'vue-router';
-  import { ref } from 'vue';
+  import { ref, watch } from 'vue';
   import { useToast } from 'vue-toastification'
 
 
@@ -279,12 +286,36 @@
   const phone = ref("");
   const address = ref("");
   const status = ref("actif"); 
-  
   const errors = ref({});
+const serverErrors = ref([]); 
+  watch(serverErrors, (newErrors) => {
+  errors.value = {}; // Réinitialiser les erreurs
+  newErrors.forEach((err) => {
+    if (err.path === "name") {
+      errors.value.name = err.msg;
+    }
+    if (err.path === "email") {
+      errors.value.email = err.msg;
+    }
+    if (err.path === "password") {
+      errors.value.password = err.msg;
+    }
+    if (err.path === "role") {
+      errors.value.role = err.msg;
+    }
+    if (err.path === "phone") {
+      errors.value.telephone = err.msg;
+    }
+    if (err.path === "address") {
+      errors.value.address = err.msg;
+    }
+  });
+});
+
   
   const handleAddUser = () => {
     addUser();
-    router.push('/list-user');
+    
   };
   
   const addUser = async () => {
@@ -303,7 +334,14 @@
       router.push('/list-user'); 
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'utilisateur:", error);
-      errors.value = error.response?.data?.errors || {};
+      if (error.response && error.response.data.errors) {
+      // Remplir les erreurs serveur
+      serverErrors.value = error.response.data.errors;
+    } else {
+    toast.error(
+      "Erreur lors de l'ajout du prestataire. Veuillez vérifier les données."
+    );
+    }
     }
   };
   </script>

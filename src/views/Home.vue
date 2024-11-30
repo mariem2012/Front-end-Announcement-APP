@@ -226,8 +226,13 @@ onMounted(() => {
 
 
 .overlay {
-  padding: 50px 20px;
+  padding: 20px;
+  padding-bottom: 20px;
   border-radius: 8px;
+  background-color: #070f6977;
+  width: 60%;
+  margin: auto;
+
 }
 
 .btn {

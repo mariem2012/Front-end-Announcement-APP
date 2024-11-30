@@ -2,7 +2,7 @@
 
 ## Description
 
-Announcement App est une application web de gestion des annonces locales en Mauritanie, développée avec Vue.js 3 et la Composition API. La gestion des états est réalisée avec Pinia, et la navigation entre les différentes pages (Accueil, Annonces, Catégories) est assurée par Vue Router. L'interface utilisateur est stylisée avec Bootstrap, offrant une expérience utilisateur moderne et réactive.
+Announcement App est une application web de gestion des annonces locales en Mauritanie, développée avec Vue.js 3 et la Composition API. La gestion des états est réalisée avec Pinia, et la navigation entre les différentes pages (Accueil, Annonces, Catégories, Utilisateurs) est assurée par Vue Router. L'interface utilisateur est stylisée avec Bootstrap, offrant une expérience utilisateur moderne et réactive.
 
 ## Prérequis
 
@@ -47,9 +47,9 @@ L'application est accessible sur http://localhost:5173.
 
 1. **Announcement :** 
 
- - fetchAnnouncements : cette fonction permet de recuperer tout les annonces.
+ - fetchAnnouncements : cette fonction permet de recuperer touts les annonces.
    
- - getAllRecipeById : cette fonction permet de recuperer une annonce à partir de son id.
+ - fetchAnnouncementById : cette fonction permet de recuperer une annonce à partir de son id.
    
  - createAnnouncement : cette fonction permet d'ajouter une annonce.
  
@@ -58,19 +58,20 @@ L'application est accessible sur http://localhost:5173.
  - updateAnnouncement :  cette fonction permet de modifier une annonce.
 2. **Category :** 
 
- - getAllgories : Récupère toutes les catégories disponibles.
+ - fetchCategories : Récupère toutes les catégories disponibles.
  - getCategoryById : Récupère une catégorie spécifique en utilisant son identifiant.
 
- - createCategory : Ajoute une nouvelle catégorie.
- - deleteCategories : Supprime une catégorie à partir de son id.
+ - addCategory : Ajoute une nouvelle catégorie.
+ - deleteCategory : Supprime une catégorie à partir de son id.
  
- - updateCategories : Modifier Modifie une catégorie existante.
-2. **Utilisateurs  :** 
+ - updateCategory : Modifier Modifie une catégorie existante.
+3. **User  :** 
 
  - registerUser  : Permet à un nouvel utilisateur de s'inscrire à l'application.
  - loginUser  : Authentifie l'utilisateur en vérifiant ses identifiants.
  - fetchUsers : Récupère la liste des utilisateurs (administration).
- - getUserById : Récupère les informations d'un utilisateur spécifique en utilisant son identifiant.
+ - addUser : Ajoute une nouvelle utilisateur (administration).
+ - fetchUserById : Récupère les informations d'un utilisateur spécifique en utilisant son identifiant.
  
  - updateUser : Met à jour les informations de l'utilisateur.
  - deleteUser : Supprime un utilisateur en fonction de son identifiant.

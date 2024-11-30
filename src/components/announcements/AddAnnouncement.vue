@@ -13,6 +13,7 @@
           placeholder="Entrez le titre"
           required
         />
+        <small class="text-danger">{{ errors.title }}</small>
       </div>
 
       <div class="mb-3">
@@ -26,6 +27,7 @@
           placeholder="Entrez le prix en MRU"
           required
         />
+        <small class="text-danger">{{ errors.price }}</small>
       </div>
 
       <div class="mb-3">
@@ -52,9 +54,10 @@
           rows="4"
           placeholder="Décrivez votre annonce"
         ></textarea>
+        <small class="text-danger">{{ errors.description }}</small>
       </div>
 
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label for="picture" class="form-label"><i class="fas fa-picture me-2"></i> Photos :</label>
         <input
           class="form-control"
@@ -62,9 +65,8 @@
           id="picture"
           multiple
           @change="handleImageUpload"
-        />
-        <small class="text-muted">Vous pouvez télécharger plusieurs picture</small>
-      </div>
+        />      
+      </div> -->
 
       <button type="submit" class="btn w-100 mt-3">Ajouter l'annonce</button>
     </form>
@@ -74,7 +76,12 @@
 <script setup>
 import { useAnnouncementStore } from '../../store/announcementStore';
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import {ref, watch} from 'vue';
+import { onMounted } from 'vue';
+import { useToast } from 'vue-toastification'
+
+
+const toast = useToast();
 
 const router = useRouter();
 const store = useAnnouncementStore();
@@ -83,9 +90,11 @@ const title = ref('');
 const price = ref(0);
 const selectedCategory = ref('');
 const description = ref('');
-const picture = ref([]);
+const user_id = ref(null)
+// const picture = ref([]);
 const categories = ref([]);
-// const userId = ref(1); 
+const errors = ref({});
+const serverErrors = ref([]); 
 
 const loadCategories = async () => {
   try {
@@ -100,26 +109,55 @@ onMounted(() => {
   loadCategories();
 });
 
-const handleImageUpload = (event) => {
-  picture.value = Array.from(event.target.files);
-};
+// const handleImageUpload = (event) => {
+//   picture.value = Array.from(event.target.files);
+// };
+
+watch(serverErrors, (newErrors) => {
+  errors.value = {}; 
+  newErrors.forEach((err) => {
+    if (err.path === "title") {
+      errors.value.title = err.msg;
+    }
+    if (err.path === "price") {
+      errors.value.price = err.msg;
+    }
+    if (err.path === "description") {
+      errors.value.description = err.msg;
+    }
+  });
+});
+console.log(errors.value.title);
+console.log(errors.value.price);
+console.log(errors.value.description);
 
 const handleAddAnnouncement = async () => {
+  errors.value = {}; // Réinitialiser les erreurs avant chaque soumission
   try {
     await store.createAnnouncement({
       title: title.value,
       price: parseFloat(price.value),
       category_id: parseInt(selectedCategory.value),
       description: description.value,
-      picture: picture.value,
       publish_date: new Date().toISOString(),
     });
-    console.log('Annonce ajoutée avec succès');
+    toast.success('Annonce ajoutée avec succès');
     router.push('/list-announcement');
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'annonce :", error);
+    if (error.response && error.response.data.errors) {
+      // Remplir les erreurs serveur
+      serverErrors.value = error.response.data.errors;
+    } else {
+      toast.error(
+        'Erreur lors de l\'ajout de l\'annonce. Veuillez réessayer.'
+      );
+    }
   }
 };
+
+
+
 </script>
 
 
