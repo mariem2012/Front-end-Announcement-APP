@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('authStore', {
         return this.user.value;
       } catch (error) {
         console.error('Erreur lors de la connexion :', error);
-        toast.error('Échec de la connexion. Veuillez vérifier vos informations.');
+        throw error;
       }
     },
 
@@ -75,9 +75,8 @@ export const useAuthStore = defineStore('authStore', {
         toast.success('Inscription réussie. Bienvenue sur la plateforme !');
         return response.data;
       } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Une erreur est survenue. Veuillez réessayer.';
         toast.error('Erreur lors de l\'inscription');
-        throw new Error(errorMessage); // Propager l'erreur pour que le composant puisse réagir
+        throw error; // Propager l'erreur pour que le composant puisse réagir
       }
     },
     

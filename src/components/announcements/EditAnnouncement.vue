@@ -1,5 +1,6 @@
 
 <template>
+  <Navbar />
   <div class="container mt-5">
     <form @submit.prevent="handleEditAnnouncement" class="formulaire form shadow-lg p-5 mb-5 rounded bg-white">
       <h2 class="text-center mb-4 text-dark">Modifier l'Annonce</h2>
@@ -9,11 +10,12 @@
         <input
           type="text"
           class="form-control form-control-lg"
-          v-model="title"
+          v-model="annonce.title"
           id="title"
           placeholder="Entrez le titre"
           required
         />
+        <small class="text-danger">{{ errors.title }}</small>
       </div>
 
       <div class="mb-4">
@@ -23,38 +25,58 @@
         <input
           type="number"
           class="form-control form-control-lg"
-          v-model="price"
-          id="price"
+          v-model.number="annonce.price" 
+          step="0.01"
           placeholder="Entrez le prix en MRU"
           required
         />
+        <small class="text-danger">{{ errors.price }}</small>
       </div>
 
       <div class="mb-4">
         <label for="category" class="form-label"><i class="fas fa-list-alt me-2"></i> Catégorie :</label>
         <select
-          class="form-select form-select-lg"
-          v-model="selectedCategory"
-          id="category"
-          required
-        >
-          <option value="" disabled>Choisissez une catégorie</option>
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
-          </option>
-        </select>
+  class="form-select form-select-lg"
+  v-model="annonce.category_id"
+  id="category"
+  required
+>
+  <option value="" disabled>Choisissez une catégorie</option>
+  <option v-for="category in categories" :key="category.id" :value="category.id">
+    {{ category.name }}
+  </option>
+</select>
+
       </div>
 
       <div class="mb-4">
         <label for="description" class="form-label"><i class="fas fa-align-left me-2"></i> Description :</label>
         <textarea
           class="form-control form-control-lg"
-          v-model="description"
+          v-model="annonce.description"
           id="description"
           rows="4"
           placeholder="Décrivez votre annonce"
         ></textarea>
+        <small class="text-danger">{{ errors.description }}</small>
       </div>
+      <div class="mb-3">
+          <label for="images" class="form-label"><i class="fas fa-picture me-2"></i> Photos :</label>
+          <input class="form-control" type="file" id="images" multiple @change="handleImageUpload" />
+        </div>
+        <div v-if="annonce.picture && annonce.picture.length">
+  <p>Images actuelles :</p>
+  <div class="d-flex flex-wrap">
+    <img
+      v-for="img in annonce.picture"
+      :src="img"
+      :alt="'Image' + img"
+      :key="img"
+      class="m-2"
+      width="100"
+    />
+  </div>
+</div>
 
       
 
@@ -65,22 +87,54 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useAnnouncementStore } from '../../store/announcementStore';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import axios from 'axios';
 
 const route = useRoute();
 const router = useRouter();
 const store = useAnnouncementStore();
-
-const title = ref('');
-const price = ref(0);
+const picture = ref([])
+const handleImageUpload = (event) => {
+    picture.value = Array.from(event.target.files); // Capturer plusieurs fichiers
+  };
 const selectedCategory = ref('');
-const description = ref('');
+
 const toast = useToast()
 const categories = ref([]);
 const announcementId = ref('');
+const annonce = ref({
+      title : '',
+      description : '',
+      price : null,
+      
+      // user_id : user.value,
+      category_id : selectedCategory,
+      publish_date: new Date().toISOString()
+      
+  })
+const errors = ref({});
+
+const serverErrors = ref([]); 
+watch(serverErrors, (newErrors) => {
+  errors.value = {}; 
+  newErrors.forEach((err) => {
+    if (err.path === "title") {
+      errors.value.title = err.msg;
+    }
+    if (err.path === "price") {
+      errors.value.price = err.msg;
+    }
+    if (err.path === "description") {
+      errors.value.description = err.msg;
+    }
+  });
+});
+console.log(errors.value.title);
+
+const userId = (computed(()=> localStorage.getItem("userId")))
 
 const loadCategories = async () => {
   try {
@@ -100,14 +154,15 @@ const loadAnnouncement = async () => {
     const fetchedAnnouncement = store.selectedAnnouncement;
 
     if (fetchedAnnouncement) {
-      title.value = fetchedAnnouncement.title;
-      price.value = fetchedAnnouncement.price;
-      selectedCategory.value = fetchedAnnouncement.category_id;
-      description.value = fetchedAnnouncement.description;
-      
-    } else {
-      console.error("Aucune annonce trouvée pour cet ID");
-    }
+  annonce.value = {
+    ...fetchedAnnouncement,
+    category_id: fetchedAnnouncement.category_id,
+    
+  };
+} else {
+  console.error("Aucune annonce trouvée pour cet ID");
+}
+
   } catch (error) {
     console.error("Erreur lors du chargement de l'annonce :", error);
   }
@@ -123,26 +178,45 @@ onMounted(() => {
 
 const handleEditAnnouncement = async () => {
   try {
-    await store.updateAnnouncement(announcementId.value, {
-      title: title.value,
-      price: parseFloat(price.value),
-      category_id: parseInt(selectedCategory.value),
-      description: description.value,
-      
+    const formData = new FormData();
+    picture.value.forEach((file) => {
+      formData.append('upload', file);
     });
-    toast.success('Annonce modifiée avec succès');
-    router.push('/list-announcement');
+
+    // Téléchargement des images
+    const uploadResponse = await axios.post(
+      `http://localhost:3500/upload`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    if (uploadResponse.data.success) {
+      // const imageUrls = uploadResponse.data.imageUrl; // Tableau d'URL retourné par le backend
+      // console.log(imageUrls);
+
+      const updatedAnnouncement = {
+        ...annonce.value,
+        picture: uploadResponse.data.imageUrl 
+        
+        // Ajout du tableau d'images
+      };
+console.log(updatedAnnouncement);
+      // Mise à jour de l'annonce
+      await store.updateAnnouncement(announcementId.value, updatedAnnouncement);
+      toast.success("Annonce modifiée avec succès");
+      router.push(`/profil/${userId.value}`);
+    }
   } catch (error) {
     console.error("Erreur lors de la modification de l'annonce :", error);
-    if (error.errors) {
-      //serverErrors.value = error.errors;  Affichez les erreurs serveur
+    if (error.response?.data?.errors) {
+      serverErrors.value = error.response.data.errors;
     } else {
-      toast.error(
-        error.error || 'Une erreur est survenue. Veuillez réessayer.'
-      );
+      toast.error("Une erreur est survenue. Veuillez réessayer.");
     }
   }
 };
+
+
 
 </script>
 

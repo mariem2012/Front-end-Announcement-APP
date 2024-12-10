@@ -210,7 +210,8 @@ button i {
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useCategoryStore } from "../../store/categoryStore";
-
+import { useToast } from "vue-toastification";
+const toast = useToast()
 const searchQuery = ref("");
 const store = useCategoryStore();
 
@@ -242,8 +243,13 @@ const closeModal = () => {
 const destroyCategory = async (id) => {
   const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?");
   if (confirmDelete) {
-    await store.deleteCategory(id);
-    // alert("Catégorie supprimée avec succès.");
+    const result = await store.deleteCategory(id);
+
+    if (result.success) {
+      toast.success(result.message, { position: "top-right" });
+    } else {
+      toast.error(result.message, { position: "top-right" });
+    }
   }
 };
 </script>

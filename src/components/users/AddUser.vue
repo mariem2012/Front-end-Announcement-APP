@@ -241,7 +241,6 @@
             id="statut"
             class="form-select"
             v-model="status"
-            :class="{ 'is-invalid': errors.status }"
             required
           >
             <option value="actif">Actif</option>
@@ -287,7 +286,7 @@
   const address = ref("");
   const status = ref("actif"); 
   const errors = ref({});
-const serverErrors = ref([]); 
+  const serverErrors = ref([]); 
   watch(serverErrors, (newErrors) => {
   errors.value = {}; // Réinitialiser les erreurs
   newErrors.forEach((err) => {
@@ -304,7 +303,7 @@ const serverErrors = ref([]);
       errors.value.role = err.msg;
     }
     if (err.path === "phone") {
-      errors.value.telephone = err.msg;
+      errors.value.phone = err.msg;
     }
     if (err.path === "address") {
       errors.value.address = err.msg;

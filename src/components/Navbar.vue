@@ -92,13 +92,13 @@
                   <i class="fa-solid fa-users me-2"></i> Utilisateurs
                 </router-link>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" title="Publier une annonce" v-if="!authStore.isAuthenticated">
                 <router-link
                   to="/publish"
                   class="nav-link btn btn-primary d-flex align-items-center me-3"
                 >
                   <i class="fa-solid fa-plus me-2"></i>
-                  Publier une annonce
+                  Publication
                 </router-link>
               </li>
   
@@ -112,7 +112,6 @@
               </router-link>
             </li>
 
-            <!-- Bouton "Déconnexion" -->
             <li class="nav-item" title="Utilisateur" v-if="authStore.isAuthenticated">
               <router-link :to=" role === 'ADMIN' ? '/dashboard' :`/profil/${userId}`"
                 class="nav-link btn btn-outline d-flex align-items-center"
@@ -141,11 +140,11 @@
   <script setup>
   import { computed, ref } from "vue";
   import { useAuthStore } from '../store/authStore';
-import router from "../routes";
+  import router from "../routes";
 
     const authStore = useAuthStore();
-const userId = (computed(()=> localStorage.getItem("userId")))
-const role = computed(()=> localStorage.getItem("userRole"))
+    const userId = (computed(()=> localStorage.getItem("userId")))
+     const role = computed(()=> localStorage.getItem("userRole"))
 
 console.log("USER_ID", userId.value, "ROLE", role.value);
 
@@ -171,6 +170,7 @@ console.log("USER_ID", userId.value, "ROLE", role.value);
   
   .navbar-nav .btn-primary:hover {
     background-color: #FFA500;
+    border: none;
   }
   
   .navbar-nav .btn-outline {

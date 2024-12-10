@@ -82,12 +82,20 @@ export const useUserStore = defineStore('user', {
     async fetchUsers() {
       try {
         const response = await api.get('/users');
-        this.users = response.data;
+        
+        // Conversion explicite du statut en booléen
+        this.users = response.data.map(user => ({
+          ...user,
+          // Si status est une chaîne "true", on le convertit en true, sinon false
+          status: user.status === 'true' ? true : (user.status === 'false' ? false : user.status)
+        }));
+    
         console.log("Users fetched successfully", this.users);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs:", error);
       }
     },
+    
 
     
     async fetchUserById(id) {
@@ -105,8 +113,10 @@ export const useUserStore = defineStore('user', {
         console.log("Sending user data:", userData); 
     
         const response = await api.post('/users/add', userData);
-        this.users.push(response.data);
-        console.log("User added successfully", response.data);
+        // this.users.push(response.data);
+        return response.data;
+
+        // console.log("User added successfully", response.data);
       } catch (error) {
         console.error("Erreur lors de l'ajout de l'utilisateur:", error.response ? error.response.data : error);
         throw error;

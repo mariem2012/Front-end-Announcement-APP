@@ -59,6 +59,7 @@
   .buttons .btn-outline-primary {
     border-color: #FFA500;
     color: #FFA500;
+    
   }
   
   .buttons .btn-outline-primary:hover {

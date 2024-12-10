@@ -3,7 +3,6 @@
     <div class="container mt-5">
       <h2 class="text-center fw-bold mb-4">Consultez les Annonces</h2>
   
-      <!-- Barre de recherche -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <input
           type="text"
@@ -14,7 +13,6 @@
         />
       </div>
   
-      <!-- Liste des annonces -->
       <div class="row">
         <div
           v-for="announcement in filteredAnnouncements"
@@ -51,7 +49,6 @@
         </div>
       </div>
   
-      <!-- Modal pour afficher les détails -->
       <div v-if="isModalVisible" class="modal-overlay" @click="closeModal">
         <div class="modal-content" @click.stop>
           <h4>{{ selectedAnnouncement.title }}</h4>
@@ -83,7 +80,6 @@
   const announcements = ref([]);
   const searchQuery = ref("");
   
-  // État pour la modale
   const isModalVisible = ref(false);
   const selectedAnnouncement = ref(null);
   

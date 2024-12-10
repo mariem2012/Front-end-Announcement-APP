@@ -122,10 +122,10 @@ const deleteAnnouncement = (id) => {
 
 <template>
   <div class="container mt-5">
-    <h2 class="text-center fw-bold mb-4">Liste des Annonces</h2>
+    <h2 class="text-center fw-bold mb-4" v-if="desableList">Liste des Annonces</h2>
 
     <!-- Barre de recherche -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div v-if="desableList" class="d-flex  justify-content-between align-items-center mb-4">
       <div class="input-group" style="max-width: 400px;">
         <span class="input-group-text" id="search-addon">
           <i class="fas fa-search"></i>
@@ -147,7 +147,7 @@ const deleteAnnouncement = (id) => {
     </div>
 
     <!-- Liste des annonces -->
-    <div class="table-responsive">
+    <div v-if="desableList" class="table-responsive">
       <table class="table table-striped table-bordered border-dark">
         <thead class="table-success">
           <tr>
@@ -176,7 +176,7 @@ const deleteAnnouncement = (id) => {
            
             <td class="text-center">
               <button
-                @click="viewAnnouncementDetails(announcement)"
+                @click="viewAnnouncementDetails( announcement)"
                 class="btn btn-outline-info btn-sm mx-1"
               >
                 <i class="fa-solid fa-eye"></i>
@@ -194,18 +194,36 @@ const deleteAnnouncement = (id) => {
     </div>
 
     <!-- Modal pour afficher les détails d'une annonce -->
-    <div v-if="isModalVisible" class="modal-overlay" @click="closeModal">
+    <div v-if="isModalVisible || modalVisible" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <div class="modal-body">
           <h3>Détails de l'Annonce</h3>
-          <p><strong>Titre :</strong> {{ selectedAnnouncement.title }}</p>
-          <p><strong>Prix :</strong> {{ selectedAnnouncement.price }} MRU</p>
-          <p><strong>Date de Publication :</strong> {{ formatDate(selectedAnnouncement.publish_date) }}</p>
-          <p><strong>Catégorie :</strong> {{ getCategoryName(selectedAnnouncement.category_id) }}</p>
-          <p><strong>Statut :</strong> {{ selectedAnnouncement.status ? 'Actif' : 'Inactif' }}</p>
-          <p><strong>Description :</strong> {{ selectedAnnouncement.description }}</p>
+          <p><strong>Titre : </strong>
+            <span v-if="selectedAnnouncement">{{ selectedAnnouncement.title }}</span>
+            <span v-else>{{ annonce.title }}</span></p>
+
+          <p><strong>Prix :</strong> 
+            <span v-if="selectedAnnouncement">{{ selectedAnnouncement.price }} MRU</span>
+            <span v-else>{{ annonce.price }} MRU</span>
+          </p>
+          <p><strong>Date de Publication :</strong>
+            <span v-if="selectedAnnouncement">{{ formatDate(selectedAnnouncement.publish_date) }}</span> 
+            <span v-else>{{ formatDate(annonce.publish_date) }}</span></p>
+          <p><strong>Catégorie :</strong>
+            <span v-if="selectedAnnouncement">{{ getCategoryName(selectedAnnouncement.category_id) }}</span>
+            <span v-else>{{ getCategoryName(annonce.category_id) }}</span>
+          </p>
+          <p><strong>Statut :</strong> 
+            <span v-if="selectedAnnouncement"> {{ selectedAnnouncement.status ? 'Actif' : 'Inactif' }}</span>
+            <span v-else> {{ annonce.status ? 'Actif' : 'Inactif' }}</span>
+           
+          </p>
+          <p><strong>Description :</strong> 
+            <span v-if="selectedAnnouncement">{{ selectedAnnouncement.description }}</span>
+            <span v-else>{{ annonce.description }}</span>
+          </p>
         </div>
-        <button class="btn btn-danger" @click="closeModal">Fermer</button>
+        <button class="btn btn-danger" :v-model="modalVisible" @click="closeModal">Fermer</button>
       </div>
     </div>
 
@@ -276,6 +294,9 @@ const viewAnnouncementDetails = (announcement) => {
 // Fermer la modal
 const closeModal = () => {
   isModalVisible.value = false;
+  emit("update:modalVisible", false);
+  
+  
   selectedAnnouncement.value = null;
 };
 
@@ -284,6 +305,22 @@ const deleteAnnouncement = (id) => {
     store.deleteAnnouncement(id);
   }
 };
+const props = defineProps({
+  desableList:{
+    type: Boolean,
+    default: true
+  },
+  annonce : {
+type: Object,
+default: null
+  },
+  modalVisible: {
+    type: Boolean,
+    default: false
+  },
+  modelValue: Boolean
+})
+const emit = defineEmits(["update:modalVisible"])
 </script>
 
 <style scoped>

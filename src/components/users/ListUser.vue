@@ -1,4 +1,4 @@
-<!-- <template>
+ <template>
   <div class="container">
     <div class="search-bar d-flex justify-content-center my-4">
       <h1 class="mb-4 text-center fw-bold title-margin" style="color: #070f69">
@@ -39,7 +39,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.phone }}</td>
             <td>{{ user.address }}</td>
-            <td>{{ user.status ? 'Actif' : 'Inactif' }}</td>
+            <td>{{ user.status }}</td>
             <td class="text-center">
               <button class="btn btn-sm" @click="openModal(user)">
                 <i class="fa-solid fa-eye" style="color: #4596d3; font-size: 20px"></i>
@@ -205,10 +205,10 @@ const destroyUser = (id) => {
 .container {
   padding-top: 70px;
 }
-</style> -->
-<template>
+</style> 
+<!-- <template>
   <div class="container">
-    <!-- Barre de recherche et filtre -->
+     Barre de recherche et filtre 
     <div class="search-bar d-flex justify-content-center my-4">
       <h1 class="mb-4 text-center fw-bold title-margin" style="color: #070f69;">
         Liste des Utilisateurs
@@ -236,7 +236,7 @@ const destroyUser = (id) => {
       </button>
     </RouterLink>
   
-    <!-- Tableau des utilisateurs -->
+    >
     <div class="table-responsive">
       <table class="table table-hover align-middle">
         <thead class="table-light">
@@ -282,7 +282,7 @@ const destroyUser = (id) => {
       </table>
     </div>
   
-    <!-- Modal de détails -->
+    
     <div v-if="isModalVisible" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <div class="modal-body">
@@ -298,9 +298,9 @@ const destroyUser = (id) => {
       </div>
     </div>
   </div>
-</template>
+</template> -->
   
-<script setup>
+<!-- <script setup>
 import { ref, onMounted } from 'vue';
 import { useUserStore } from '../../store/userStore';
   
@@ -350,8 +350,8 @@ const destroyUser = async (id) => {
   }
 };
 </script>
-  
-<style scoped>
+   -->
+<!-- <style scoped>
 .container {
   padding-top: 70px;
 }
@@ -459,4 +459,4 @@ const destroyUser = async (id) => {
   background-color: #dc3545;
   color: white;
 }
-</style>
+</style> -->

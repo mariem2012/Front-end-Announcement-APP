@@ -19,6 +19,8 @@ import PublishPage from '../views/PublishPage.vue';
 import AnnouncementDetails from '../components/announcements/AnnouncementDetails.vue';
 import ChangePassword from '../components/ChangePassword..vue';
 import Announcements from '../components/announcements/Announcements.vue';
+import ForgetPassword from '../views/ForgetPassword.vue';
+import ResetPassword from '../views/ResetPassword.vue';
 
 
 
@@ -26,9 +28,7 @@ import Announcements from '../components/announcements/Announcements.vue';
 const routes = [
   { path: '/', component: Home },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true },
-   children: [
-    { path: '/edit-announcement/:id', name: 'EditAnnoncement', component: EditAnnoncement },
-    
+   children: [    
     { path: '/list-announcement', name: 'ListAnnouncement', component: ListAnnouncement },
     {
       path: '/list-user',
@@ -78,11 +78,12 @@ const routes = [
    
 
   },
-  
+  { path: '/reset-password', component: ResetPassword },
+  { path: '/forgetpassword', component: ForgetPassword },
   { path: '/put/password', component: ChangePassword },
-  { path: '/profil/:id', component: Profil, children: [
-    { path: '/add-announcement', name: 'AddAnnouncement', component: AddAnnouncement },
-  ]},
+  { path: '/profil/:id', component: Profil},
+  { path: '/add-announcement', name: 'AddAnnouncement', component: AddAnnouncement },
+  { path: '/edit-announcement/:id', name: 'EditAnnoncement', component: EditAnnoncement },
   { path: '/login', component: Login},
   { path: '/', redirect: '/login' },
   { path: '/register', component: Register},

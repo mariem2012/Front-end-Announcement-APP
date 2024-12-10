@@ -13,6 +13,7 @@
           placeholder="Entrez le nom de la catégorie"
           required
         />
+        <small class="text-danger">{{ errors.name }}</small>
       </div>
 
       <div class="mb-4">
@@ -31,13 +32,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useCategoryStore } from "../../store/categoryStore";
 import { useRoute, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+
+
+const toast = useToast()
 
 const router = useRouter();
 const route = useRoute();
 const store = useCategoryStore();
+const errors = ref({});
+
 
 const category = ref({
   id: null,
@@ -51,13 +58,33 @@ const loadCategory = async () => {
   category.value = fetchedCategory;
 };
 
+const serverErrors = ref([]); 
+
+watch(serverErrors, (newErrors) => {
+  errors.value = {}; 
+  newErrors.forEach((err) => {
+    if (err.path === "name") {
+      errors.value.name = err.msg;
+    }
+    if (err.path === "statut") {
+      errors.value.statut = err.msg;
+    }
+  });
+});
+
 const handleSubmit = async () => {
   try {
     await store.updateCategory(category.value);
-    // alert("Catégorie mise à jour avec succès !");
     router.push("/list-category");
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la catégorie", error);
+    if (error.response && error.response.data.errors) {
+      serverErrors.value = error.response.data.errors;
+    } else {
+      toast.error(
+        'Erreur lors de l\'ajout de categorie. Veuillez réessayer.'
+      );
+    }
   }
 };
 
